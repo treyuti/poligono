@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title>My page title</title>
+        <style>
+            #zombie_map {
+                height: 100%;
+                width: 100%;
+                left: 0;
+                position: absolute;
+                top: 0;  
+                background-color: grey;
+            }
+        </style>      
+    </head>
+    <body>
+        My zombie map
+        <div id="zombie_map"></div>
+        <script>
+            var zombie_map;
+            function initMap() {
+        
+                    zombie_map = new google.maps.Map(document.getElementById('zombie_map'), {
+                    zoom: 15,
+                    center: {lat: 40.626388, lng: -4.020900}
+                });
+            }
+        </script>
+        <script async defer 
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCze7bhxsqs5WGEKHNV8jWx0GaRdntQHDI&callback=initMap">
+        </script>      
+    </body>
+  </html>
