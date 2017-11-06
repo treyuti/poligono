@@ -2,7 +2,7 @@
     <head>
         <title>My page title</title>
         <style>
-            #zombie_map {
+            #industrial_park {
                 height: 100%;
                 width: 100%;
                 left: 0;
@@ -10,20 +10,105 @@
                 top: 0;  
                 background-color: grey;
             }
+            .content {
+                display: table; 
+            }
+            .content-row { 
+                display: table-row;
+            }
+            .left,.center,.right {
+                display: table-cell;
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            .left,.right {
+                vertical-align:middle; 
+                text-align:center
+            }             
+            .controlUI {
+                background-color: '#fff';
+                border: '2px solid #fff';
+                border-radius: '3px';
+                box-shadow: '0 2px 6px rgba(0,0,0,.3)';
+                cursor: pointer;
+                margin-bottom: '22px';
+                text-align: 'center';
+            }               
+            .controlText {
+                color: 'rgb(25,25,25)';
+                font-family: 'Roboto,Arial,sans-serif';
+                font-size: '16px';
+                line-height: '38px';
+                padding-left: '5px';
+                padding-right: '5px';
+            }                   
         </style>      
     </head>
     <body>
         My zombie map
-        <div id="zombie_map"></div>
+        <div id="industrial_park"></div>
         <script>
-            var zombie_map;
+            
+            var industrial_park;
             function initMap() {
         
-                    zombie_map = new google.maps.Map(document.getElementById('zombie_map'), {
-                    zoom: 15,
-                    center: {lat: 40.626388, lng: -4.020900}
+                industrial_park = new google.maps.Map(document.getElementById('industrial_park'), {
+                    zoom: 17,
+                    center: {lat: 40.543757, lng: -3.900684},
+                    mapTypeId: 'hybrid',
+                    styles: [
+                        {
+                            featureType: "poi",
+                            elementType: "labels",
+                            stylers: [
+                                { visibility: "off" }
+                            ]
+                        }
+                    ]                    
+                    
+                });
+
+                var icons = {
+                    office_building: {icon: 'poi/office-building.png'}
+                };
+
+                var features = [
+                    {
+                        name: 'affin',
+                        description: 'Es una empresa de servicios en tecnologías de la información que, desde el año 2004, viene ofreciendo a sus clientes la posibilidad de contar con un equipo de profesionales de alta cualificación y experiencia para el desarrollo e implantación de sus soluciones.',
+                        position: new google.maps.LatLng(40.543879, -3.899600),
+                        url_position: "40.543879,-3.899600",
+                        type: 'office_building'
+                    }
+                ];
+                // Create markers.
+                features.forEach(function(feature) {
+                    var marker = new google.maps.Marker({
+                        position: feature.position,
+                        icon: icons[feature.type].icon,
+                        map: industrial_park
+                    });
+                    var contentString = 
+                        "<div class='content'>" +
+                        "   <div class='content-row'>" +
+                        "       <div class='left'>"+
+                        "           <img src='logo/" + feature.name + ".png' style='width: 32px;'/>"+
+                        "      </div>" +
+                        "       <div class='center'>" + feature.description + "</div>" +
+                        "       <div class='right'><div class='controlUI'><div class='controlText'><a href='https://www.google.com/maps/search/?api=1&query=" + feature.position + "'>Navegar</a></div></div></div>" +
+                        "   </div>" +
+                        " </div>";
+                    var infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                    });
+                    marker.addListener('click', function() {
+                        infowindow.open(industrial_park, marker);
+                    });
+
                 });
             }
+
+
         </script>
         <script async defer 
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCze7bhxsqs5WGEKHNV8jWx0GaRdntQHDI&callback=initMap">
